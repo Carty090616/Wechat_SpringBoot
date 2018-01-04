@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: MyWeiXin
+    
+server:
+  port: 8090
+  context-path: /MyWeiXin

@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 @Service("coreService")
 public class CoreServiceImpl implements CoreService {
 
-    private static Logger log = LoggerFactory.getLogger(CoreServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(CoreServiceImpl.class);
 
     /**
      * 处理微信发来的请求（包括事件的推送）
@@ -66,6 +66,10 @@ public class CoreServiceImpl implements CoreService {
             List<Article> articleList = new ArrayList<Article>();
             // 接收文本消息内容
             String content = requestMap.get("Content");
+            
+            //记录日志
+            logger.info(fromUserName + "请求的内容是：" + content);
+            
             // 自动回复文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
 
@@ -155,47 +159,48 @@ public class CoreServiceImpl implements CoreService {
                     }
                 }
             }
-        // 图片消息
-        else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
-            respContent = "您发送的是图片消息！";
-            textMessage.setContent(respContent);
-            // 将文本消息对象转换成xml字符串
-            respMessage = MessageUtil.textMessageToXml(textMessage);
-        }
-        // 地理位置消息
-        else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)) {
-            respContent = "您发送的是地理位置消息！";
-            textMessage.setContent(respContent);
-            // 将文本消息对象转换成xml字符串
-            respMessage = MessageUtil.textMessageToXml(textMessage);
-        }
-        // 链接消息
-        else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LINK)) {
-            respContent = "您发送的是链接消息！";textMessage.setContent(respContent);
-            // 将文本消息对象转换成xml字符串
-            respMessage = MessageUtil.textMessageToXml(textMessage);
-
-        }
-        // 音频消息
-        else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VOICE)) {
-            respContent = "您发送的是音频消息！";
-            textMessage.setContent(respContent);
-            // 将文本消息对象转换成xml字符串
-            respMessage = MessageUtil.textMessageToXml(textMessage);
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        }
-
-        return respMessage;
-        }
-/**
- * 判断是否是QQ表情
- *
- * @param content
- * @return
- */
-public static boolean isQqFace(String content) {
+	        // 图片消息
+	        else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
+	            respContent = "您发送的是图片消息！";
+	            textMessage.setContent(respContent);
+	            // 将文本消息对象转换成xml字符串
+	            respMessage = MessageUtil.textMessageToXml(textMessage);
+	        }
+	        // 地理位置消息
+	        else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)) {
+	            respContent = "您发送的是地理位置消息！";
+	            textMessage.setContent(respContent);
+	            // 将文本消息对象转换成xml字符串
+	            respMessage = MessageUtil.textMessageToXml(textMessage);
+	        }
+	        // 链接消息
+	        else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LINK)) {
+	            respContent = "您发送的是链接消息！";textMessage.setContent(respContent);
+	            // 将文本消息对象转换成xml字符串
+	            respMessage = MessageUtil.textMessageToXml(textMessage);
+	
+	        }
+	        // 音频消息
+	        else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VOICE)) {
+	            respContent = "您发送的是音频消息！";
+	            textMessage.setContent(respContent);
+	            // 将文本消息对象转换成xml字符串
+	            respMessage = MessageUtil.textMessageToXml(textMessage);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	
+	    return respMessage;
+	}
+    
+	/**
+	 * 判断是否是QQ表情
+	 *
+	 * @param content
+	 * @return
+	 */
+    public static boolean isQqFace(String content) {
         boolean result = false;
 
         // 判断QQ表情的正则表达式
@@ -203,8 +208,8 @@ public static boolean isQqFace(String content) {
         Pattern p = Pattern.compile(qqfaceRegex);
         Matcher m = p.matcher(content);
         if (m.matches()) {
-        result = true;
+        	result = true;
         }
         return result;
-        }
+    }
 }
